@@ -17,11 +17,11 @@ For Deep Security specific issues, please use the regular Trend Micro support ch
 
 - [Pre-Requisites](#pre-requisites)
 - [Usage](#usage)
-   - [iplists](#usage-iplists)
+   - [iplist](#usage-iplist)
    - [sqli & xss](#usage-sqli-xss)
 - [SSL Certificate Validation](#ssl-certificate-validation)
 - [AWS WAF Costs](#aws-waf-costs)
-  - [iplists](#aws-waf-costs-iplists)
+  - [iplist](#aws-waf-costs-iplist)
   - [sqli & xss](#aws-waf-costs-sqli-xss)
 
 <a name="pre-requisites" />
@@ -108,21 +108,21 @@ You'll notice in the examples, the password is set to USE_RBAC_TO_REDUCE_RISK. I
 
 Currently Deep Security treats API access just like a user logging in. Therefore it is strongly recommended that you create a new Deep Security user for use with this script. This user should have the bare minimum permissions required to complete the tasks.
 
-<a name="usage-iplists" />
+<a name="usage-iplist" />
 
-### iplists
+### iplist
 
-The iplists command is a simple, two-step process. You must first find the ID of the list in Deep Security and then push that IP list to an AWS WAF IP set.
+The iplist command is a simple, two-step process. You must first find the ID of the list in Deep Security and then push that IP list to an AWS WAF IP set.
 
 **Step 1;**
 
 ```
 # list the available IP lists in Deep Security
 # ...for Deep Security as a Service
-python ds-to-aws-waf.py iplists -u WAF -p PASSWORD -t TENANT -l
+python ds-to-aws-waf.py iplist -u WAF -p PASSWORD -t TENANT -l
 
 # ...for another Deep Security manager
-python ds-to-aws-waf.py iplists -u WAF -p PASSWORD -d DSM_HOSTNAME --ignore-ssl-validation -l
+python ds-to-aws-waf.py iplist -u WAF -p PASSWORD -d DSM_HOSTNAME --ignore-ssl-validation -l
 ```
 
 This command will then display a list of IP lists and their associated IDs. You can then use those IDs to push the IP list to AWS WAF as an IP Set.
@@ -132,17 +132,17 @@ This command will then display a list of IP lists and their associated IDs. You 
 ```
 # push a Deep Security IP list to an AWS WAF IP Set
 # ...for Deep Security as a Service
-python ds-to-aws-waf.py iplists -u WAF -p PASSWORD -t TENANT -i 17
+python ds-to-aws-waf.py iplist -u WAF -p PASSWORD -t TENANT -i 17
 
 # ...for another Deep Security manager
-python ds-to-aws-waf.py iplists -u WAF -p PASSWORD -d DSM_HOSTNAME --ignore-ssl-validation -i 17
+python ds-to-aws-waf.py iplist -u WAF -p PASSWORD -d DSM_HOSTNAME --ignore-ssl-validation -i 17
 ```
 
 The complete command syntax is;
 
 ```
- # ./ds-to-aws-waf.py iplists --help
-usage: ds-to-aws-waf.py iplists [-h] [-d DSM] [--dsm-port DSM_PORT] -u
+ # ./ds-to-aws-waf.py iplist --help
+usage: ds-to-aws-waf.py iplist [-h] [-d DSM] [--dsm-port DSM_PORT] -u
                                 DSM_USERNAME -p DSM_PASSWORD [-t DSM_TENANT]
                                 [-r AWS_REGION] [--ignore-ssl-validation]
                                 [--dryrun] [--verbose] [-l] [-i IP_LIST]
@@ -341,11 +341,11 @@ AWS WAF charges for each web access control list (WACL), for each rule, and for 
 
 We've done our best to ensure that each command optimizes the changes it makes in AWS WAF in order to reduce your costs. In general, you can run a command with the ```--dryrun``` option to see the results without making changes and before incurring any costs.
 
-<a name="aws-waf-costs-iplists" />
+<a name="aws-waf-costs-iplist" />
 
-### iplists
+### iplist
 
-The *iplists* command does not create a WACL or rule on your behalf. It creates new IPSet objects that can be used in an AWS WAF rule as a match condition. There are no charges for these IPSets.
+The *iplist* command does not create a WACL or rule on your behalf. It creates new IPSet objects that can be used in an AWS WAF rule as a match condition. There are no charges for these IPSets.
 
 <a name="aws-waf-costs-sqli-xss" />
 
